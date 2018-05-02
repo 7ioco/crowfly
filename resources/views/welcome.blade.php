@@ -19,7 +19,6 @@
 	@charset "UTF-8";
 
 /* Layout*/
-
 html {
   height: 100%;
   -webkit-text-size-adjust: 100%;
