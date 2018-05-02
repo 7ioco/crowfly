@@ -19,6 +19,7 @@
 	@charset "UTF-8";
 
 /* Layout*/
+
 html {
   height: 100%;
   -webkit-text-size-adjust: 100%;
@@ -518,7 +519,6 @@ function codeAddress(id) {
                   map.fitBounds(bounds);
                 }
 				
-				
 				//var midpoint = ((geoResults.address1+geoResults.address2)/2);//
 				//map.setCenter(midpoint);//
 				
@@ -536,7 +536,52 @@ function codeAddress(id) {
         
           polyline.setMap(map);
   }
-  
+  function doCalculation2() {    
+    if (typeof geoResults.address1 === "object" 
+        && typeof geoResults.address2 === "object") {
+        
+				
+
+
+        var result = google.maps.geometry.spherical.computeDistanceBetween(geoResults.address1, geoResults.address2);
+        // geoResults.address1 is a LatLng() object.
+        // geoResults.address2 is a LatLng() object.
+				result *= 0.000621371192;
+        topResult = Math.round(result);
+				var LatLngList = new Array(geoResults.address1, geoResults.address2);
+				var bounds = new google.maps.LatLngBounds();
+				for (var i=0; i < LatLngList.length; i++) {
+					bounds.extend(LatLngList[i]);
+				}	
+				map.fitBounds(bounds);
+				var marker1 = new google.maps.Marker({
+            map: map, 
+            position: geoResults.address1
+        });
+		
+				var marker2 = new google.maps.Marker({
+					map: map, 
+					position: geoResults.address2
+        });
+				
+				var line = new google.maps.Polyline({
+					geodesic: true,
+					map: map,
+					path: [geoResults.address1, geoResults.address2],
+					strokeWeight: 5,
+					strokeOpacity: 0.6,
+					strokeColor: "#FF6666"
+				});
+				
+				
+				//var midpoint = ((geoResults.address1+geoResults.address2)/2);//
+				//map.setCenter(midpoint);//
+				
+				document.getElementById("flies_distance").append = "The distance is: " + topResult + " Miles";
+        //alert("The distance is: " + topResult + " Miles");//
+        geoResults["flies_distance"] = topResult;
+    }
+  }
   
   function geoCode() {
     var address;
